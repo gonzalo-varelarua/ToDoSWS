@@ -11,6 +11,9 @@ import { RouterLink, RouterView } from 'vue-router'
       <a class="nav-link">
         <RouterLink :to="'/todo'">Aplicación ToDo</RouterLink>
       </a>
+      <a class="nav-link" href="https://github.com/gonzalo-varelarua/ToDoSWS" target="_blank">
+        GitHub
+      </a>
     </nav>
   </header>
 
