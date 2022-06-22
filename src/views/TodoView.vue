@@ -4,7 +4,7 @@ import axios from 'axios'
 import type { Tarea } from '../types/Tarea'
 import TodoItem from '../components/TodoItem.vue'
 
-const APIURL = 'http://todo2.varelacastelo.com/api/tareas'
+const APIURL = 'http://todo.varelacastelo.com/api/tareas'
 
 const nuevaTarea = ref<Tarea>({ id: '', completado: false, texto: '' })
 
