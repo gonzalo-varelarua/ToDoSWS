@@ -95,7 +95,7 @@ function closeModal() {
   display: block;
   position: relative;
   height: auto;
-  width: 310px;
+  width: 300px;
   padding: 30px;
   box-sizing: border-box;
   background-color: #fff;
