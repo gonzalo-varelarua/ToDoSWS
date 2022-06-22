@@ -50,10 +50,7 @@ function closeModal() {
       v-else
       v-model="textoEdit"
       @keyup.enter="$emit('modificado', indice, textoEdit)"
-      @keyup.escape="
-        textoEdit = texto
-        $emit('modificar', -1)
-      "
+      @keyup.escape="textoEdit = texto; $emit('modificar', -1)"
       @vnode-mounted="({ el }: any) => el.focus()"
       class="form-control"
     />
@@ -64,10 +61,7 @@ function closeModal() {
     </button>
     <button
       v-else-if="editando === indice"
-      @click="
-        textoEdit = texto
-        $emit('modificar', -1)
-      "
+      @click="textoEdit = texto; $emit('modificar', -1)"
       class="btn btn-link me-1"
     >
       Cancelar
@@ -86,10 +80,7 @@ function closeModal() {
       <p v-html="strModal"></p>
       <button
         type="button"
-        @click="
-          $emit('eliminar', indice)
-          closeModal
-        "
+        @click="$emit('eliminar', indice); closeModal"
         class="btn btn-danger me-3"
       >
         eliminar
