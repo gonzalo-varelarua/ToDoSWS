@@ -1,46 +1,40 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import axios from 'axios'
 import type { Tarea } from '../types/Tarea'
 import TodoItem from '../components/TodoItem.vue'
 
-const CLAVE = 'tareas' // Clave de localStorage
+const APIURL = 'http://todo2.varelacastelo.com/api/tareas'
 
-const tareasDeEjemplo: Tarea[] = [
-  {
-    id: Math.random(),
-    completado: false,
-    texto: 'Mi primera tarea'
-  }
-]
-
-const nuevaTarea = ref<Tarea>({ id: Math.random(), completado: false, texto: '' })
+const nuevaTarea = ref<Tarea>({ id: '', completado: false, texto: '' })
 
 const tareas = ref<Tarea[]>([])
 
 const editando = ref<number>(-1) // Un número negativo indica que no se edita
 
 onMounted(() => {
-  const tex = localStorage.getItem(CLAVE)
-  if (tex !== null) tareas.value = JSON.parse(tex as string)
-  else tareas.value = tareasDeEjemplo
+  axios.get(APIURL).then(function (response: { data: Tarea[] }) {
+    tareas.value = response.data
+  })
 })
-
-function guardar() {
-  localStorage.setItem(CLAVE, JSON.stringify(tareas.value))
-}
 
 function anadir() {
   if (nuevaTarea.value.texto !== '') {
-    tareas.value.push(Object.assign({}, nuevaTarea.value))
-    nuevaTarea.value.id = Math.random()
+    const tarea = Object.assign({}, nuevaTarea.value)
+    axios.post(APIURL, tarea).then(function (response: { data: Tarea }) {
+      tareas.value.push(response.data)
+    })
+    nuevaTarea.value.id = ''
     nuevaTarea.value.texto = ''
   }
-  guardar()
 }
 
 function cambiarCompletado(indice: number) {
-  tareas.value[indice].completado = !tareas.value[indice].completado
-  guardar()
+  const tarea = Object.assign({}, tareas.value[indice])
+  tarea.completado = !tarea.completado
+  axios.put(APIURL + '?id=' + tarea.id, tarea).then(function () {
+    tareas.value[indice].completado = !tareas.value[indice].completado
+  })
 }
 
 function modificar(indice: number) {
@@ -49,14 +43,19 @@ function modificar(indice: number) {
 }
 
 function modificado(indice: number, tex: string) {
-  tareas.value[indice].texto = tex
-  guardar()
-  editando.value = -1
+  const tarea = Object.assign({}, tareas.value[indice])
+  tarea.texto = tex
+  axios.put(APIURL + '?id=' + tarea.id, tarea).then(function () {
+    tareas.value[indice].texto = tex
+    editando.value = -1
+  })
 }
 
 function eliminar(indice: number) {
-  tareas.value.splice(indice, 1)
-  guardar()
+  const tarea = Object.assign({}, tareas.value[indice])
+  axios.delete(APIURL + '?id=' + tarea.id).then(function () {
+    tareas.value.splice(indice, 1)
+  })
 }
 </script>
 
