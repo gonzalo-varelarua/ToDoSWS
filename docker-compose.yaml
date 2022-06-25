@@ -1,0 +1,22 @@
+version: "1.0"
+
+services:
+
+  backend:
+ 
+    image: todoapisws:dev
+    ports:
+      - "80:80"
+
+  frontend:
+ 
+    image: gonzalovarela/todo-frontend:latest
+    ports:
+      - "8080:80"
+
+# Actualmente el 'frontend' está publicado en 'http://todo.varelacastelo.com'
+# y hace solicitudes a 'http://todo.varelacastelo.com/api/tareas' donde está el 'backend'.
+
+# Para que este 'compose' tenga sentido:
+# En el 'frontend' debe sustituirse 'todo.varelacastelo.com' por el 'alias de red' que genera este 'compose'
+# Con dicho cambio puede llamarse al frontend con esta URL: 'http://localhost:8080'
